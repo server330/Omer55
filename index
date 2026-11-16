@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة عمر عماد الشيخ | للكتب والروايات</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        body {
+            background-color: #f5f2eb;
+            color: #3e2723;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* رأس الصفحة بواجهة كاملة وصور مكاتب وكتب متراكمة مع تدرج بني وبيج */
+        header {
+            position: relative;
+            text-align: center;
+            color: white;
+            padding: 80px 20px;
+            background: linear-gradient(rgba(62, 39, 35, 0.85), rgba(121, 85, 72, 0.75)), 
+                        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+            box-shadow: 0 4px 20px rgba(62, 39, 35, 0.2);
+            margin-bottom: 30px;
+        }
+
+        header .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        header p {
+            font-size: 16px;
+            opacity: 0.95;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .controls-container {
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 14px 22px;
+            font-size: 15px;
+            border: 2px solid #d7ccc8;
+            border-radius: 30px;
+            outline: none;
+            transition: 0.3s;
+            background: #fff8f0;
+            color: #3e2723;
+            margin-bottom: 15px;
+        }
+
+        #searchInput:focus {
+            border-color: #8d6e63;
+            box-shadow: 0 0 10px rgba(141, 110, 99, 0.3);
+        }
+
+        .categories-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #efebe9;
+            border: 1px solid #d7ccc8;
+            color: #5d4037;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #6d4c41;
+            color: white;
+            border-color: #6d4c41;
+        }
+
+        .bookshop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .book-card {
+            background: #fffdf9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(62, 39, 35, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #d7ccc8;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(62, 39, 35, 0.15);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            background-color: #d7ccc8;
+        }
+
+        .book-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .book-genre {
+            display: inline-block;
+            background: #efebe9;
+            color: #6d4c41;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            width: fit-content;
+            font-weight: bold;
+        }
+
+        .book-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #3e2723;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            font-size: 13px;
+            color: #8d6e63;
+            margin-bottom: 8px;
+        }
+
+        .book-rating {
+            color: #d79c00;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .book-desc {
+            font-size: 13px;
+            color: #5d4037;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid #efebe9;
+        }
+
+        .book-price {
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 16px;
+        }
+
+        .btn-details {
+            background: #d7ccc8;
+            color: #3e2723;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-details:hover {
+            background: #6d4c41;
+            color: white;
+        }
+
+        /* نافذة تفاصيل الكتاب (Modal) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(62, 39, 35, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #fffdf9;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 1px solid #d7ccc8;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 26px;
+            cursor: pointer;
+            color: #8d6e63;
+        }
+
+        .close-modal:hover {
+            color: #3e2723;
+        }
+
+        .modal-body h2 {
+            margin-bottom: 8px;
+            color: #3e2723;
+        }
+
+        .modal-body p {
+            font-size: 14px;
+            color: #5d4037;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .modal-buy-btn {
+            background: #6d4c41;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .modal-buy-btn:hover {
+            background: #4e342e;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 13px;
+            color: #8d6e63;
+            background-color: #efebe9;
+            border-top: 1px solid #d7ccc8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- رأس الصفحة بواجهة خلفية متناسقة (بني وبيج) -->
+    <header>
+        <div class="logo">📚 مكتبة عمر عماد الشيخ</div>
+        <p>بوابتك الرقمية لاكتشاف أروع الكتب والروايات الأدبية والمعرفية</p>
+    </header>
+
+    <!-- شريط البحث والتصفية -->
+    <div class="controls-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن اسم الكتاب، الرواية، أو المؤلف...">
+        
+        <!-- أزرار الفلترة حسب التصنيف -->
+        <div class="categories-filter" id="categoriesFilter">
+            <button class="filter-btn active" data-category="الكل">الكل</button>
+            <button class="filter-btn" data-category="روايات خيالية">روايات خيالية</button>
+            <button class="filter-btn" data-category="روايات أدبية">روايات أدبية</button>
+            <button class="filter-btn" data-category="تنمية بشرية">تنمية بشرية</button>
+            <button class="filter-btn" data-category="تطوير ذات">تطوير ذات</button>
+        </div>
+    </div>
+
+    <!-- شبكة عرض الكتب والروايات -->
+    <main class="bookshop-grid" id="booksContainer">
+        <!-- يتم تعبئة العناصر ديناميكياً عبر الجافاسكريبت -->
+    </main>
+
+    <!-- نافذة تفاصيل الكتاب المنبثقة (Modal) -->
+    <div class="modal-overlay" id="bookModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- تفاصيل الكتاب تظهر هنا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - مكتبة عمر عماد الشيخ</p>
+    </footer>
+
+    <script>
+        const booksData = [
+            {
+                id: 1,
+                title: "رواية أرض زيكولا",
+                author: "عمرو عبد الحميد",
+                genre: "روايات خيالية",
+                description: "تدور أحداث القصة في قرية فريدة يعامل أهلها العملات الورقية بوحدات من الذكاء البشري، حيث تنطلق رحلة مثيرة تتحدى العقل والمشاعر.",
+                price: "15.00 $",
+                cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐⭐ (4.8)",
+                pages: 288
+            },
+            {
+                id: 2,
+                title: "قواعد العشق الأربعون",
+                author: "إليف شافاق",
+                genre: "روايات أدبية",
+                description: "رواية مترابطة بين العصر الحديث والقرن الثالث عشر، تروي قصة شمس التبريزي وجلال الدين الرومي وأثر الحب الإلهي الإنساني.",
+                price: "18.50 $",
+                cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐⭐ (4.9)",
+                pages: 350
+            },
+            {
+                id: 3,
+                title: "الخيميائي",
+                author: "باولو كويلو",
+                genre: "روايات خيالية",
+                description: "قصة رمزية شهيرة لراعٍ إسباني شاب يسافر بحثاً عن كنز مدفون قرب الأهرامات، ليكتشف في رحلته معاني الحكمة والقدر.",
+                price: "12.00 $",
+                cover: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐ (4.5)",
+                pages: 185
+            },
+            {
+                id: 4,
+                title: "الأب الغني والأب الفقير",
+                author: "روبرت كيوساكي",
+                genre: "تنمية بشرية",
+                description: "كتاب مالي يغير المفاهيم التقليدية حول العمل والمال، ويوضح الفارق بين عقلية الموظف وعقلية المستثمر.",
+                price: "14.00 $",
+                cover: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐⭐ (4.7)",
+                pages: 336
+            },
+            {
+                id: 5,
+                title: "رواية يوتوبيا",
+                author: "أحمد خالد توفيق",
+                genre: "روايات خيالية",
+                description: "عمل أدبي يستشرف المستقبل في عالم مقسم بين أثرياء يعيشون في نعيم محصن ومهمشين يعيشون في فقر مدقع خارج الأسوار.",
+                price: "10.00 $",
+                cover: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐ (4.3)",
+                pages: 240
+            },
+            {
+                id: 6,
+                title: "فن اللامبالاة",
+                author: "مارك مانسون",
+                genre: "تطوير ذات",
+                description: "منهج توجيهي واقعي يمنحك أدوات لتحديد الأولويات بحكمة والتركيز على ما يهم حقاً في حياتك.",
+                price: "13.50 $",
+                cover: "https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐ (4.4)",
+                pages: 272
+            },
+            {
+                id: 7,
+                title: "السر (The Secret)",
+                author: "روندا بايرن",
+                genre: "تنمية بشرية",
+                description: "مستكشف لقانون الجذب الفكري وكيفية استخدام الطاقة الإيجابية لجذب النجاح وتحقيق الأهداف.",
+                price: "16.00 $",
+                cover: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐ (4.2)",
+                pages: 198
+            },
+            {
+                id: 8,
+                title: "قوة العادات",
+                author: "تشارلز داهيج",
+                genre: "تطوير ذات",
+                description: "دراسة تحليلية مدعومة بالأمثلة حول كيفية تشكل العادات وكيفية تعديلها لتحقيق التغيير الشخصي والمهني.",
+                price: "17.00 $",
+                cover: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=400&q=80",
+                rating: "⭐⭐⭐⭐⭐ (4.8)",
+                pages: 371
+            }
+        ];
+
+        const booksContainer = document.getElementById('booksContainer');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const bookModal = document.getElementById('bookModal');
+        const modalBody = document.getElementById('modalBody');
+        const closeModal = document.getElementById('closeModal');
+
+        let currentCategory = 'الكل';
+
+        function displayBooks(books) {
+            if (!booksContainer) return;
+            booksContainer.innerHTML = '';
+            
+            if (books.length === 0) {
+                booksContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #8d6e63; padding: 20px;">عذراً، لم نجد نتائج مطابقة لبحثك.</p>`;
+                return;
+            }
+
+            books.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}" class="book-cover">
+                    <div class="book-content">
+                        <span class="book-genre">${book.genre}</span>
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">المؤلف: ${book.author}</div>
+                        <div class="book-rating">${book.rating}</div>
+                        <p class="book-desc">${book.description}</p>
+                        <div class="book-footer">
+                            <span class="book-price">${book.price}</span>
+                            <button class="btn-details" onclick="openBookDetails(${book.id})">التفاصيل</button>
+                        </div>
+                    </div>
+                `;
+                booksContainer.appendChild(card);
+            });
+        }
+
+        function filterAndSearchBooks() {
+            const term = searchInput ? searchInput.value.toLowerCase() : '';
+            
+            const filtered = booksData.filter(book => {
+                const matchesCategory = (currentCategory === 'الكل' || book.genre === currentCategory);
+                const matchesSearch = book.title.toLowerCase().includes(term) || 
+                                      book.author.toLowerCase().includes(term) || 
+                                      book.description.toLowerCase().includes(term);
+                return matchesCategory && matchesSearch;
+            });
+
+            displayBooks(filtered);
+        }
+
+        window.openBookDetails = function(bookId) {
+            const book = booksData.find(b => b.id === bookId);
+            if (!book || !bookModal) return;
+
+            modalBody.innerHTML = `
+                <img src="${book.cover}" alt="${book.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px;">
+                <span class="book-genre">${book.genre}</span>
+                <h2>${book.title}</h2>
+                <p style="color: #8d6e63; font-size: 13px; margin-bottom: 5px;">المؤلف: ${book.author}</p>
+                <p style="color: #d79c00; font-size: 13px; margin-bottom: 10px;">التقييم: ${book.rating} | عدد الصفحات: ${book.pages} صفحة</p>
+                <p>${book.description}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <span style="font-weight: bold; color: #2e7d32; font-size: 18px;">السعر: ${book.price}</span>
+                    <button class="modal-buy-btn" style="width: auto; padding: 10px 25px;" onclick="alert('تمت إضافة (${book.title}) إلى السلة بنجاح! 🛒')">شراء الآن</button>
+                </div>
+            `;
+            bookModal.style.display = 'flex';
+        };
+
+        if (closeModal) {
+            closeModal.addEventListener('click', () => {
+                bookModal.style.display = 'none';
+            });
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === bookModal) {
+                bookModal.style.display = 'none';
+            }
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener('input', filterAndSearchBooks);
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCategory = e.target.getAttribute('data-category');
+                filterAndSearchBooks();
+            });
+        });
+
+        if (booksContainer) {
+            displayBooks(booksData);
+        }
+    </script>
+</body>
+</html>
